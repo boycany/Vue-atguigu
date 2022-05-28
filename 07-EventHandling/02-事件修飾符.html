@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin-top: 20px;
+        }
+
+        .stop {
+            height: 50px;
+            background-color: skyblue;
+        }
+
+        .box1 {
+            background-color: skyblue;
+            padding: 5px;
+        }
+
+        .box2 {
+            background-color: orange;
+            padding: 5px;
+        }
+
+        .self {
+            height: 50px;
+            background-color: skyblue;
+        }
+
+        .list {
+            height: 200px;
+            width: 200px;
+            overflow: auto;
+            background-color: peru;
+        }
+
+        li {
+            height: 50px;
+        }
+    </style>
+</head>
+<!-- 
+        Vue 中的事件修飾符:
+    
+    常用------
+    1. prevent: 阻止 default 事件
+    2. stop: 阻止事件冒泡
+    3. once: 事件只觸發一次
+
+    少見------
+    4. capture: 使用事件的捕獲模式
+    5. self: 只有 event.target 是當前操作的元素時才觸發事件
+    6. passive: 事件的預設行為立即執行，無需等待事件回調執行完畢。
+
+-->
+
+<body>
+    <div id="root">
+        <div class="prevent">
+            <h2>{{ name }}</h2>
+            <a href="https://www.google.com" @click="showInfo">ForPrevent</a>
+            <a href="https://www.youtube.com" @click.prevent="showInfo2">ForPrevent2</a>
+        </div>
+        <!-- 因為 div 也有聆聽 click 事件，若點擊 button 也會讓 div 聆聽事件的函式啟動，這就是事件冒泡 -->
+        <div class="stop" @click="showInfo2">
+            <button @click="showInfo">ForStop</button>
+            <button @click.stop="showInfo2">ForStop 2 </button>
+            <!-- 如果像連結有預設事件，要阻止冒泡，又要阻止預設行為的話，可連續使用於 @click 事件後。 （順序有影響）-->
+            <a href="https://www.google.com" @click.stop.prevent="showInfo2">ForStop 2 </a>
+        </div>
+        <!-- 事件只觸發一次 -->
+        <div class="once">
+            <button @click.once="showInfo2">ForOnce</button>
+        </div>
+        <!-- 使用事件的捕獲模式 -->
+        <!-- 點擊 box2 的時候，先經過事件捕獲的階段，再來到事件冒泡，預設是事件冒泡時才處理事件的。 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            box1
+            <div class="box2" @click="showMsg(2)">
+                box2
+            </div>
+        </div>
+        <!-- self: 指定在 div 的 click 事件上，使用者必須真的點擊在 div區塊才會觸發事件，所以這樣也會阻止冒泡-->
+        <div class="self" @click.self="showInfo3">
+            <button @click="showInfo3">ForSelf</button>
+        </div>
+        <!-- passive: 譬如說像是wheel事件，正常來說是先等監聽事件的函式執行完，DOM 再改變畫面的預設行為-->
+        <!-- 但如果加了 passive，就會立即執行預設行為（畫面滾動），不用等監聽事件的函式執行完畢  -->
+        <!-- 也不是所有的事件都有這個特性，所以 passive 很少用到。 -->
+        <ul @wheel="demo" class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                name: "GO",
+            },
+            methods: {
+                showInfo(e) {
+                    e.preventDefault() //阻止預設事件
+                    e.stopPropagation() //阻止事件冒泡
+                    alert("Stay here.")
+                },
+                showInfo2() {
+                    alert("Stay here!!")
+                    console.log("event happened")
+                },
+                showInfo3(e) {
+                    console.log(e.target);
+                },
+                showMsg(value) {
+                    alert("box!")
+                    console.log(value)
+                },
+                demo() {
+                    // console.log("@")
+
+                    // 假設有一個要跑比較久的事件
+                    for (let i = 0; i < 1000; i++) {
+                        console.log("#")
+                    }
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

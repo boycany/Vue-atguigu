@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+    一、Vue 中常用的按鍵別名：    
+        1. enter
+        2. delete
+        3. esc
+        4. space
+        5. tab
+        6. up
+        7. down
+        8. left
+        9. right
+
+    二、未使用別名的按鍵，可以使用按鍵原始的key值去綁定，但注意要轉為kebab-case(短橫線命名)
+    ex: CapsLock 要寫成 caps-lock
+
+    三、系統修飾鍵：ctrl、alt、shift、meta(win或cmd) 的用法特殊
+        1. 配合 keydown 使用：正常觸發事件。
+        2. 配合 keyup 使用：按下修飾鍵的同時， 再按下其他鍵，隨後釋放其他鍵，事件才被觸發。
+        
+
+    四、也可以使用 keyCode 去指定具體的按鍵（不推薦）
+
+    五、「Vue.config.keyCodes.自定義鍵名 = 鍵碼」，可以自訂按鍵別名 
+-->
+
+<body>
+    <div id="root">
+        <h1>{{ name }}</h1>
+        <input type="text" placeholder="輸入enter來顯示你的輸入" @keyup.enter="showInfo">
+        <input type="text" placeholder="輸入CapsLock來顯示你的輸入" @keyup.caps-lock="showInfo">
+        <!-- tab鍵因為會換目標位置，所以要使用 keydown事件 -->
+        <input type="text" placeholder="輸入tab來顯示你的輸入" @keydown.tab="showInfo">
+        <!-- 系統修飾鍵 -->
+        <input type="text" placeholder="輸入ctrl來顯示你的輸入" @keydown.ctrl="showInfo">
+        <!-- [ 系統修飾鍵 + 別的按鍵，來達成聆聽 ctrl + y 同時按下的點擊事件]  -->
+        <input type="text" placeholder="只有輸入 ctrl + y 才會顯示你的輸入" @keydown.ctrl.y="showInfo">
+        <!-- 自訂按鍵別名 -->
+        <input type="text" placeholder="自訂名稱的按鍵" @keydown.return="showInfo">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        Vue.config.keyCodes.return = 13; //將enter自定義命名為return
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: 'Redder'
+            },
+            methods: {
+                showInfo(e) {
+                    // print 出按鍵名跟 keyCode
+                    // console.log(e.key, e.keyCode);
+
+                    // if (e.keyCode !== 13) return
+                    console.log(e.target.value);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

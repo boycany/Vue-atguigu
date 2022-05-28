@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天氣案例-監視屬性</title>
+</head>
+
+<!-- 
+    1. 當被監視的屬性發生變化時，handler函式自動啟用，進行相關操作
+    2. 監視的屬性必須存在，才能進行監視
+    3. 兩種配置方法：
+        (1) new Vue() 時傳入 watch 配置
+        (2) 通過 vm.$watch 來配置
+ -->
+
+<body>
+    <div id="root">
+        <h2>今天天氣很{{ info }}</h2>
+        <button @click="changeWeather">切換天氣</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                isHot: true,
+            },
+            computed: {
+                info() {
+                    return this.isHot ? "炎熱" : "涼爽"
+                }
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot
+                }
+            },
+            watch: {
+                isHot: {
+                    //imediate 預設是 false，設為 true 時，會在第一次 loading 網頁時，就跑一次 handler
+                    immediate: true,
+                    // 當 isHot 發生改變時， handler 就被調用
+                    handler(newValue, oldValue) {
+                        console.log("isHot 被改變了", newValue, oldValue);
+                    }
+                },
+                info: {
+                    immediate: true,
+                    handler(newValue, oldValue) {
+                        console.log("info被改變了", newValue, oldValue);
+                    }
+                }
+            }
+        })
+
+        // vm.$watch('isHot', {
+        //     immediate: true,
+        //     handler(newValue, oldValue) {
+        //         console.log("isHot被改變了", newValue, oldValue);
+        //     }
+        // })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>{{ name }}</h2>
+
+        <!-- showInfo 默認等於 showInfo($event) -->
+        <button v-on:click="showInfo">Press</button>
+        <button @click="showInfo2(66, $event)">Press-2</button>
+        <button @click="showInfo3($event, 33)">Press-3</button>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: "Button"
+            },
+            methods: {
+                showInfo: function (event) {
+                    console.log(event.target) //<button>...</button>
+                    console.log(this)   // Vue{...}
+                    console.log(this === vm);  //true
+                },
+                showInfo2(number, event) {
+                    console.log("num", number)
+                    console.log(event.target);
+                },
+                showInfo3(event, number) {
+                    console.log(event.target.innerText);
+                    console.log(number);
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

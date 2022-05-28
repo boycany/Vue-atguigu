@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binding</title>
+</head>
+
+<body>
+    <div id="root">
+
+        單向數據綁定：
+        <input type="text" :value="name">
+        <br />
+        雙向數據綁定：
+        <input type="text" v-model="name">
+        <!-- v-model 只能應用在表單類元素 -->
+        <!-- v-model 預設是搜集 value 值，所以 v-model:value，可以縮寫成 v-model -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+
+        const app = new Vue({
+            // el: '#root',
+            // data: {
+            //     name: '瑞德'
+            // }
+            // data 的第二種寫法：函數式。（不要寫成箭頭函式，不然this對象會變成window）
+            data() {
+                console.log(this);  //此處的this也是Vue的實例對象
+                return {
+                    name: "瑞德"
+                }
+            }
+        })
+        console.log(app) //輸出Vue的實例對象
+
+        app.$mount('#root')
+
+
+    </script>
+</body>
+
+</html>

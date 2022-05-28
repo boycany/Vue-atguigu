@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>姓名案例-computed</title>
+</head>
+<!-- 
+    計算屬性：
+        1. 定義：要用的屬性不存在，是通過已有的屬性計算而來。
+        2. 原理：底層借助了 Object.defineProperty() 提供的 getter 和 setter
+        3. 優勢：和 methods 相比，內部有緩存機制，方便重複使用，且效率更高。
+        4. 備註：
+            (1) 計算屬性最終會出現在 vm 上，直接讀取使用即可。
+            (2) 如果計算屬性要被修改，必須寫 set()函數去響應修改，且 set 中要引起計算時依賴的數據發生變化。
+
+ -->
+
+<body>
+    <div id="root">
+        <label for="firstName">姓：</label>
+        <input type="text" id="firstName" v-model:value="firstName"> <br />
+        <label for="lastName">名：</label>
+        <input type="text" id="lastName" v-model:value="lastName"> <br />
+        <label>姓名：</label>
+        <span>{{ fullname }}</span> <br />
+        <label>姓名：</label>
+        <span>{{ fullname }}</span> <br />
+        <label>姓名：</label>
+        <span>{{ fullname }}</span> <br />
+        <label>姓名：</label>
+        <span>{{ fullname }}</span>
+        <!-- 假如現在有四個地方，同時使用到 fullname 這個屬性。
+            get 讀取第一次之後就會存在緩存裡，另外三個重複使用這個屬性的地方就是直接從緩存拿。 -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: "張",
+                lastName: "三"
+                // vm 裡的 ＿data 存著這兩個屬性 
+            },
+            computed: {
+                fullname: {
+                    /* 
+                        1. get 有什麼作用？當有人讀取 fullname 時，get 就會被調用。
+                           且返回值就作為 fullname 的值。
+                        2. get 什麼時候會被調用？
+                           (1) 初次讀取 fullname 時
+                           (2) 所依賴的數據發生變化時
+                    */
+                    get() {
+                        console.log("get被調用了")
+                        return this.firstName + "-" + this.lastName
+                    },
+                    set(value) {
+                        console.log('set被調用了', value)
+
+                        const arr = value.split("-")
+                        this.firstName = arr[0]
+                        this.lastName = arr[1]
+                    }
+                    //set() 非必要寫，如果 fullname 沒有重新賦值的需求就可以不用寫。
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
