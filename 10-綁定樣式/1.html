@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .basic {
+        width: 400px;
+        height: 100px;
+        border: 1px solid black;
+    }
+
+    .happy {
+        border: 4px solid red;
+        background-color: (255, 255, 0, 0.644);
+        background: linear-gradient(30deg, yellow, pink, orange, yellow);
+    }
+
+    .sad {
+        border: 4px dashed green;
+        background-color: gray;
+        background: linear-gradient(120deg, white, gray, blue, purple);
+    }
+
+    .normal {
+        /* border: 1px solid black; */
+        background-color: aquamarine;
+    }
+
+    .boost1 {
+        background-color: cadetblue;
+    }
+
+    .boost2 {
+        font-size: 50px;
+        font-weight: 800;
+    }
+
+    .boost3 {
+        border-radius: 20px;
+    }
+</style>
+
+<body>
+    <div id="root">
+        <div class="basic" :class="mood" @click="changeMood">{{name}}</div>
+        <br>
+        <br>
+        <div class="basic" :class="classArr">{{name}}</div>
+        <br>
+        <br>
+        <div class="basic" :class="classObj">{{name}}
+            <button style="margin-left:10px" @click="toggleClassBoost1">Boost1</button>
+            <button style="margin-left:10px" @click="toggleClassBoost2">Boost2</button>
+        </div>
+        <br>
+        <br>
+        <!-- 綁定 style -->
+        <div class="basic" :style="styleObj">{{name}}</div>
+        <br><br>
+        <div class="basic" :style="styleArr">{{name}}</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: 'aaa',
+                mood: 'normal',
+                classArr: ["boost1", "boost2", "boost3"],
+                classObj: {
+                    boost1: false,
+                    boost2: false,
+                },
+                styleObj: {
+                    fontSize: '60px',
+                    textDecoration: "underline",
+                    color: 'green',
+                    backgroundColor: 'orange'
+                },
+                styleArr: [
+                    {
+                        fontSize: "35px",
+                        color: "blue"
+                    }, {
+                        backgroundColor: "yellow"
+                    }
+                ]
+            },
+            methods: {
+                changeMood() {
+                    const arr = ["normal", "happy", "sad"]
+                    const index = Math.floor(Math.random() * 3)
+                    this.mood = arr[index]
+                },
+                toggleClassBoost1() {
+                    this.classObj.boost1 = !this.classObj.boost1
+                },
+                toggleClassBoost2() {
+                    this.classObj.boost2 = !this.classObj.boost2
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>
