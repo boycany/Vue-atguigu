@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>目前的 n 值是： {{ n }}</h2>
+        <button @click="n++">點我加 +1</button>
+
+        <!-- <div v-show="n>=1">Angular</div>
+        <div v-show="n>=2">React</div>
+        <div v-show="n>=3">Vue</div> -->
+
+        <!-- 如果用 if 和 else-if 的組合，會比連續用三個 if 的效能高，因為如果第一個 if 過了的話，電腦就不會再判斷下去 -->
+        <!-- <div v-if="n===1">Angular</div>
+        <div v-else-if="n===2">React</div>
+        <div v-else-if="n===3">Vue</div>
+        <div v-else>哈哈</div> -->
+
+        <!-- template 只能配合 v-if -->
+        <!-- <template> 就像是<> 不會破壞 html 標籤的結構 -->
+        <template v-if="n === 1">
+            <h2>Angular</h2>
+            <h2>React</h2>
+            <h2>Vue</h2>
+        </template>
+
+        <!-- 使用 v-show 做條件渲染，會用 css 的 display 屬性來調整，所以網頁上實際仍有該 tag -->
+        <!-- 會在變換頻率高的情況下使用，避免在 DOM 裡一直新增和刪除節點，這樣會有較好的效能 -->
+        <h2 v-show="true">Hello, {{ name }}!</h2>
+        <h2 v-show="false">要秀嗎? </h2>
+        <!-- 可以寫 JS 表達式 -->
+        <h2 v-show="1===1">要秀嗎? </h2>
+
+        <!-- 使用 v-if 做條件渲染，如果 false 的話就是整個 tag 都不會出現。適合在變換頻率不高的狀況下使用。 -->
+        <h2 v-if="false">true 的話會顯示</h2>
+        <h2 v-if="1===1">true 的話會顯示</h2>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: "World",
+                n: 0
+            }
+        })
+    </script>
+</body>
+
+</html>

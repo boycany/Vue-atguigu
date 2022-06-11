@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+    react、vue 中的 key 值有什麼作用呢？ 其內部原理是什麼？
+
+    1. 虛擬 DOM 中 key 的作用：
+        key 是虛擬 DOM 對象的標誌。
+        當資料發生變化時，Vue 會根據「新資料」生成「新的虛擬 DOM」，
+        隨後 Vue 進行 新虛擬 DOM 與 舊虛擬 DOM 的差異比較，比較規則如下：
+    
+        (1) 舊虛擬 DOM 中找到與 新虛擬 DOM 相同的 key：
+            
+            若虛擬 DOM 中內容沒變，直接使用之前的真實 DOM。
+            若虛擬 DOM 中內容變了，則生成新的真實 DOM，隨後替換掉頁面中之前的真實 DOM。
+
+        (2) 舊虛擬 DOM 中未找到與新虛擬 DOM 相同的 key
+            創建新的真實 DOM，隨後渲染到頁面。
+    
+    2. 用 index 作為 key 可能會引發的問題：
+        (1) 若對資料進行：反序添加、刪除...等破壞順序的操作，會產生沒有必要的真實 DOM 更新 
+            ==> 顯示沒問題，但效率低 (沒有必要更新的部分也一起更新了)
+        (2) 如果 HTML 結構中還包含 input 類的標籤，會產生錯誤的 DOM 更新 ==> 顯示有問題
+
+    3. 開發中如何選擇 key 值？
+        (1) 最好使用每個 item 的唯一標示作為 key，比如 id、手機號、身份證字號...等等
+        (2) 如果不存在對資料的破壞順序操作，僅用於渲染 List 作為展示，使用 index 作為 key 是完全沒有問題的。
+
+
+-->
+
+<body>
+    <div id="root">
+        <!-- Array loop -->
+        <h2>人員</h2>
+        <button @click.once="add">添加一個人員</button>
+        <ul>
+            <li v-for="(p, index) in persons" :key="p.id">{{index}}--{{p.name}}-{{p.age}}--{{p.id}}--
+                 <input /></li>
+        </ul>
+
+        <!-- 如果像上面一樣用唯一值 id 的話，就不會出問題。但是用 index 的話，input 的位置就會跑掉。 -->
+        <!-- <ul>
+            <li v-for="(p, index) in persons" :key="index">{{index}}--{{p.name}}-{{p.age}}--{{p.id}}-- <input /></li>
+        </ul> -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                persons: [
+                    { id: "001", name: "Red", age: 18 },
+                    { id: "002", name: "Paul", age: 19 },
+                    { id: "003", name: "Jackson", age: 20 }
+                ],
+            },
+            methods: {
+                add() {
+                    const p = { id: '004', name: 'Sam', age: 40 }
+                    this.persons.unshift(p)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
