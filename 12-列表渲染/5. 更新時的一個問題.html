@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表排序</title>
+</head>
+
+<body>
+    <div id="root">
+        <!-- Array loop -->
+        <h2>人員列表</h2>
+        <button @click="updateMei">更新馬冬梅</button>
+        <ul>
+            <li v-for="(p, index) in persons" :key="p.id">{{ p.name }}-{{ p.age }}-{{ p.sex }}</li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                persons: [
+                    { id: "001", name: "馬冬梅", age: 8, sex: "女" },
+                    { id: "002", name: "周冬雨", age: 32, sex: "女" },
+                    { id: "003", name: "周杰倫", age: 20, sex: "男" },
+                    { id: "004", name: "溫兆倫", age: 46, sex: "男" }
+                ]
+            },
+            methods: {
+                updateMei() {
+                    // this.persons[0].name = "馬老師"
+                    // this.persons[0].age = 50
+                    // this.persons[0].sex = "男"
+
+                    // 用這樣的寫法，Vue 不會偵測到這個變動，但如果去 console 下 vm.persons[0] 會看到資料有被改成功
+                    this.persons[0] = { id: '001', name: "馬先生", age: 50, sex: "男" }
+
+                    // 這樣就可以
+                    // this.persons[0] = Object.assign(this.persons[0], { name: "馬先生", age: 50, sex: "男" })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
