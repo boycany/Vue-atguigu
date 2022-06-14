@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        <h1>學校訊息</h1>
+
+        <h2>學校名稱: {{ name }}</h2>
+        <h2>學校地址: {{ address }}</h2>
+        <h2>校長是: {{ leader }}</h2>
+        <hr />
+        <h1>學生訊息</h1>
+        <button @click="addSex">添加一個性別屬性，預設是男</button>
+        <h2>學生姓名: {{student.name}}</h2>
+        <h2>學生年齡: 真實: {{student.age.realAge}} 對外:{{student.age.fakeAge}}</h2>
+        <h2>性別: {{ student.sex }}</h2>
+        <h2>朋友們</h2>
+        <ul>
+            <li v-for="f in student.friends" :key="index">{{ f.name }}--{{ f.age }}</li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: "Red",
+                address: "Wangfang",
+                leader: "",
+                student: {
+                    name: "Tom",
+                    // 即便多層子物件，Vue底層仍有個迴圈去解析所有的物件
+                    // 不管是哪一層的物件，都配置了一組 getter 和 setter 
+                    age: {
+                        realAge: "40",
+                        fakeAge: "38",
+                    },
+                    friends: [
+                        { name: "Jerry", age: 35 },
+                        { name: "Andy", age: 18 }
+                    ]
+                }
+            },
+            methods: {
+                addSex() {
+                    // Vue.set(this.student, 'sex', '男')
+                    // 第二種寫法
+                    this.$set(this.student, 'sex', '男')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
